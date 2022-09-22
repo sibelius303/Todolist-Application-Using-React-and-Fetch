@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react/cjs/react.development";
+import { useState, useEffect } from "react/cjs/react.development";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
@@ -9,6 +9,37 @@ const Home = () => {
 	const [inputValue, setImputValue] = useState('');
 	const [ todos , setTodos ] = useState([]);
 
+
+	const putToDo = async () =>{
+		let response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/cesarVallenilla",{
+			headers:{
+				"Content-Type":"application/json"
+			},
+			method:"PUT",
+			body: JSON.stringify(todos) 
+		})
+		let data = await response.json()
+		console.log(data)
+	}
+	putToDo()
+		
+
+	useEffect(() => {
+		const getToDo = async () =>{
+			let response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/cesarVallenilla",{
+				headers:{
+					"Content-Type":"application/json"
+				},
+				method:"GET",
+			})
+			let data = await response.json()
+			setTodos(data)
+		
+	}
+	getToDo()
+		
+	}, [])
+
 	function handleChange(e){
 		const value= e.target.value
 		setImputValue(value);
@@ -17,9 +48,11 @@ const Home = () => {
 		
 	function handleAdd(e){
 		let copia = [...todos];
-		copia.push(inputValue);
+		copia.push({label:inputValue,
+			done: false});
 		setTodos(copia);
 		setImputValue('');
+		putToDo();
 	}
 
 	function handleKeyDown(e){
@@ -30,9 +63,12 @@ const Home = () => {
 				return
 			}
 			let copia = [...todos];
-			copia.push(inputValue);
+			// copia.push(inputValue);
+			copia.push({label:inputValue,
+			done: false});
 			setTodos(copia);
 			setImputValue('');
+			putToDo();
 		} 
 	}
 
@@ -54,7 +90,7 @@ const Home = () => {
 					todos.map((todo,id)=> {
 						return (
 							<div className="newTodo" key={id}>
-								{todo}
+								{todo.label}
 								<button onClick={()=>handleDelete(todo,id)}>X</button>
 							</div>
 						) 
