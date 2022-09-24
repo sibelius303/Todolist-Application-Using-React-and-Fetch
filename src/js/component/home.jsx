@@ -4,40 +4,44 @@ import { useState, useEffect } from "react/cjs/react.development";
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
 
+const URL_USER = "https://assets.breatheco.de/apis/fake/todos/user/cesarVallenilla"
+
 //create your first component
 const Home = () => {
 	const [inputValue, setImputValue] = useState('');
 	const [ todos , setTodos ] = useState([]);
 
 
-	const putToDo = async () =>{
-		let response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/cesarVallenilla",{
+	const putToDo = async (copia) =>{
+		let response = await fetch(URL_USER,{
 			headers:{
 				"Content-Type":"application/json"
 			},
 			method:"PUT",
-			body: JSON.stringify(todos) 
+			body: JSON.stringify(copia) 
 		})
 		let data = await response.json()
-		console.log(data)
+		console.log(data);
+		getToDo();
 	}
-	putToDo()
+
+	const getToDo = async () =>{
+		let response = await fetch(URL_USER,{
+			headers:{
+				"Content-Type":"application/json"
+			},
+			method:"GET",
+		})
+		let data = await response.json()
+		setTodos(data)
+	
+		};
+
+
 		
 
 	useEffect(() => {
-		const getToDo = async () =>{
-			let response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/cesarVallenilla",{
-				headers:{
-					"Content-Type":"application/json"
-				},
-				method:"GET",
-			})
-			let data = await response.json()
-			setTodos(data)
-		
-	}
-	getToDo()
-		
+	getToDo()	
 	}, [])
 
 	function handleChange(e){
@@ -51,8 +55,9 @@ const Home = () => {
 		copia.push({label:inputValue,
 			done: false});
 		setTodos(copia);
+		putToDo(copia);
 		setImputValue('');
-		putToDo();
+
 	}
 
 	function handleKeyDown(e){
@@ -67,14 +72,16 @@ const Home = () => {
 			copia.push({label:inputValue,
 			done: false});
 			setTodos(copia);
+			putToDo(copia);
 			setImputValue('');
-			putToDo();
+
 		} 
 	}
 
 	function handleDelete(id){
 		let copia = [...todos];
 		setTodos(copia.filter(num => num !== id));
+		putToDo(copia.filter(num => num !== id));
 	}
 	
 	return (
