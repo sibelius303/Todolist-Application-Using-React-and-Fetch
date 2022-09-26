@@ -1,19 +1,32 @@
 import React from "react";
 import { useState, useEffect } from "react/cjs/react.development";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+const URL_API = "https://assets.breatheco.de/apis/fake/todos/user"
 
-const URL_USER = "https://assets.breatheco.de/apis/fake/todos/user/cesarVallenilla"
-
-//create your first component
 const Home = () => {
 	const [inputValue, setImputValue] = useState('');
+	const [inputUser, setInputUser] = useState('');
 	const [ todos , setTodos ] = useState([]);
+	const [user, setUser] = useState ('');
+	
+
+	const postTodo = async (newUser) => {
+		let response = await fetch (`${URL_API}/${newUser}`,{
+			headers: {
+				"Content-Type":"application/json"
+			},
+			method: "POST",
+			body: JSON.stringify( [])
+		})
+		let data = await response.json()
+		if (response.ok){
+			getToDo(newUser)
+		}
+	}
 
 
 	const putToDo = async (copia) =>{
-		let response = await fetch(URL_USER,{
+		let response = await fetch(`${URL_API}/${user}`,{
 			headers:{
 				"Content-Type":"application/json"
 			},
@@ -21,28 +34,47 @@ const Home = () => {
 			body: JSON.stringify(copia) 
 		})
 		let data = await response.json()
-		console.log(data);
-		getToDo();
+		if (response.ok){
+			getToDo(user)
+		}
+
 	}
 
-	const getToDo = async () =>{
-		let response = await fetch(URL_USER,{
+	const getToDo = async (newUser) =>{
+		let response = await fetch(`${URL_API}/${newUser}`,{
 			headers:{
 				"Content-Type":"application/json"
 			},
 			method:"GET",
 		})
 		let data = await response.json()
-		setTodos(data)
+		if(response.ok){
+			setTodos(data)
+		} else {
+			postTodo(newUser)
+		}
 	
 		};
 
-
+		const handleDeleteUser= async ()=>{
+			let response = await fetch (`${URL_API}/${user}`,{
+				headers:{
+					"Content-Type": "application/json"
+				},
+				method:"DELETE"
+			})
+			let data = await response.json()
+			if (response.status == 200){
+				console.log('Eliminado exitosamente')
+				setUser('');
+				setTodos([]);
+			}
+		}
 		
 
-	useEffect(() => {
-	getToDo()	
-	}, [])
+	// useEffect(() => {
+	// getToDo()	
+	// }, [])
 
 	function handleChange(e){
 		const value= e.target.value
@@ -78,6 +110,15 @@ const Home = () => {
 		} 
 	}
 
+	function handleEnterUser (e) {
+		if (e.key == "Enter") {
+			setInputUser(e.target.value)
+			setUser(e.target.value)
+			getToDo(e.target.value)
+			setInputUser('')
+		}
+	}
+
 	function handleDelete(id){
 		let copia = [...todos];
 		setTodos(copia.filter(num => num !== id));
@@ -86,9 +127,12 @@ const Home = () => {
 	
 	return (
 		<div className="appContainer">
-			<h1>ToDo List</h1>
+			<input type="text" value={inputUser} onChange={(e)=>setInputUser(e.target.value)} onKeyDown={handleEnterUser} placeholder="Añadir Usuario"/>
+			<h1 className="todoTitle">ToDo List</h1>
+			<h1 className="userTitle">{user}</h1>
+			<button className="buttonDelete" onClick={handleDeleteUser}>Eliminar Usuario</button>
 			<div className="container">
-				<div className="todoImput">
+				<div className="todoInput">
 					<input type="text" placeholder="Añadir Tarea" value={inputValue} onChange={handleChange} onKeyDown={handleKeyDown}/>
 					<button onClick={handleAdd}>Crear Tarea</button>
 				</div>
@@ -98,7 +142,7 @@ const Home = () => {
 						return (
 							<div className="newTodo" key={id}>
 								{todo.label}
-								<button onClick={()=>handleDelete(todo,id)}>X</button>
+								<button onClick={()=>handleDelete(todo,id)}>Eliminar</button>
 							</div>
 						) 
 					})

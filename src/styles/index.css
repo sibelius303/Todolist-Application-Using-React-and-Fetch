@@ -10,42 +10,96 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+
+.userTitle {
+    margin-bottom: 40px;
+    opacity: 0.8;
+    color: #efb810;
+    background-color: #000;
+}
+
+.todoTitle {
+    color: #efb810;
+    background-color: #000;
+    opacity: 0.8;
+    margin-bottom: 0;
+    margin-top: 20px;
+
+}
+
+
 .appContainer {
     text-align: center;
+    height: 1500px;
     padding: 5px;
+    padding-top: 30px;
+    background: rgb(14,0,255);
+    background: linear-gradient(90deg, rgba(14,0,255,1) 0%, rgba(0,0,255,1) 100%, rgba(0,0,0,1) 100%);
 
 
 }
 
 .container {
-    height: 500px;
     border: solid 1px #000;
-    margin-top: 50px;
+    margin-top: 10px;
     padding: 20px;
+    padding-top: 40px;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     background: rgb(2,0,36);
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(12,27,18,1) 59%, rgba(0,212,255,1) 100%);
 }
 
 .todoContainer {
     margin-top: 10px;
+    height: 100%;
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .newTodo {
-    background-color: lightgray;
-    border: solid 3px rgb(30, 243, 243);
-    border-radius: 5%;
+    background: rgb(14,0,255);
+    background: linear-gradient(90deg, rgba(14,0,255,1) 0%, rgba(9,9,121,1) 83%, rgba(0,0,0,1) 100%);
     padding: 5px;
-    color: rgb(44, 48, 48);
+    color: #fff;
+    font-size: 20px;
 }
 
 .newTodo button{
     border: none;
     background-color: transparent;
     margin-left: 40px;
+    float: right;
+    color: #fff;
+    width: 20%;
+    transition: 0.5s;
+}
+
+.newTodo button:hover {
+    background: rgb(14,0,255);
+    border: solid 1px #fff;
+}
+
+.todoInput input {
+    margin-right: 10px;
+}
+
+.todoInput button {
+    color: #fff;
+    background: rgb(14,0,255);
+
+}
+
+.todoInput button:hover{
+    background-color: rgba(0,212,255,1);
+}
+
+.buttonDelete {
+    color: #fff;
+    background: rgb(14,0,255);
+}
+
+.buttonDelete:hover {
+    background-color: rgba(0,212,255,1);
 }
