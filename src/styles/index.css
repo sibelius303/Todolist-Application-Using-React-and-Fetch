@@ -33,8 +33,8 @@
     height: 1500px;
     padding: 5px;
     padding-top: 30px;
-    background: rgb(14,0,255);
-    background: linear-gradient(90deg, rgba(14,0,255,1) 0%, rgba(0,0,255,1) 100%, rgba(0,0,0,1) 100%);
+    background: rgb(236,173,202);
+    background: radial-gradient(circle, rgba(236,173,202,1) 2%, rgba(238,174,202,1) 10%, rgba(221,169,203,1) 16%, rgba(0,97,212,1) 100%);
 
 
 }
@@ -68,7 +68,7 @@
 
 .newTodo button{
     border: none;
-    background-color: transparent;
+    background: #47667b;
     margin-left: 40px;
     float: right;
     color: #fff;
@@ -91,13 +91,26 @@
 
 }
 
+input {
+    background: none;
+    color: #fff;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px rgba(0,212,255,1);
+
+}
+
+input:after {
+    border-bottom: solid 1px #efb810;
+}
+
 .todoInput button:hover{
     background-color: rgba(0,212,255,1);
 }
 
 .buttonDelete {
     color: #fff;
-    background: rgb(14,0,255);
+    background: #47667b;
 }
 
 .buttonDelete:hover {
